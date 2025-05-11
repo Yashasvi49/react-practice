@@ -1,11 +1,18 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import {nanoid} from 'nanoid'
+import { toast } from 'react-toastify'
 
  function Signup(props) {
     const {pagetoggle ,setpagetoggle,users,setusers} = props
         const {register,handleSubmit ,formState: { errors },reset} = useForm()
         const submithandlersignup = (data) => {
+        const emailExists = users.find(user => user.Email === data.Email)
+        if(emailExists){
+          toast.error("an account with this email already exists!")
+          return
+        }
+
           data.id = nanoid()
           console.log(data)
           setusers([...users,data])
@@ -34,7 +41,14 @@ import {nanoid} from 'nanoid'
 
     <div>
       <input
-       {...register("Email")}
+       {...register("Email",{
+        required: 'email is required',
+        pattern: {
+    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+    message: "Invalid email address"
+  }
+
+       })}
         type="email"
         placeholder="Email"
         className="w-full px-4 py-3 bg-white/30 text-white placeholder-purple-100 border border-transparent rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-400 focus:bg-white/40 transition"
@@ -44,7 +58,10 @@ import {nanoid} from 'nanoid'
     </div>
     <div>
       <input
-       {...register("Password")}
+       {...register("Password",{required:"Password is required",minLength: {
+        value: 6 ,
+        message: "password must be at least 6 characters"
+       }})}
         type="password" 
         placeholder="Password"
         className="w-full px-4 py-3 bg-white/30 text-white placeholder-purple-100 border border-transparent rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-400 focus:bg-white/40 transition"
@@ -61,12 +78,12 @@ import {nanoid} from 'nanoid'
     </button>
 
     <div className="text-center text-purple-100 text-sm">
-      <p className="inline">Don't have an account? </p>
+      <p className="inline">Already have an account? </p>
       <button
                 onClick={() => setpagetoggle(!pagetoggle)}
 
         type="button" // Changed to type="button" to prevent form submission if it were in a real scenario
-        className="font-semibold text-pink-300 hover:text-pink-200 hover:underline focus:outline-none"
+        className="font-semibold text-pink-100 hover:text-pink-200 hover:underline focus:outline-none"
       >
         Sign In
       </button>

@@ -1,4 +1,5 @@
 import React from 'react'
+import { toast } from 'react-toastify'
 
 function List(props) {
     const {users,setusers} = props
@@ -11,7 +12,7 @@ function List(props) {
     }
     
     const userslist = users.map((user) =>{
-        return <ul  key={users.id}>
+        return <ul  key={user.id}>
         <li key={user.id} className='flex justify-between items-center  bg-white/20 backdrop-blur-lg shadow-xl rounded-2xl p-5 w-100 mb-2'>
             <div className='flex flex-col'>
                 <span className='font-thin text-2xl'>{user.Name}</span>

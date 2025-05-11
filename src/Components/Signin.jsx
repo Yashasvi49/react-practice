@@ -8,7 +8,7 @@ function Signin(props) {
     const submithandlersignin = (data) => {
       const isPresent = users.find((user) => user.Email === data.Email && user.Password === data.Password);
       if(isPresent){
-        toast.success("user already exists")
+        toast.success("user signed in")
       }else{
         toast.error("user not found")
       }
@@ -23,7 +23,14 @@ function Signin(props) {
 
     <div>
       <input
- {...register("Email")}
+       {...register("Email",{
+        required: 'email is required',
+        pattern: {
+    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+    message: "Invalid email address"
+  }
+
+       })}
         type="email"
         placeholder="Email"
         className="w-full px-4 py-3 bg-white/30 text-white placeholder-purple-100 border border-transparent rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-400 focus:bg-white/40 transition"
@@ -33,7 +40,10 @@ function Signin(props) {
     </div>
     <div>
       <input
-       {...register("Password")}
+       {...register("Password",{required:"Password is required",minLength: {
+        value: 6 ,
+        message: "password must be at least 6 characters"
+       }})}
         type="password"
         placeholder="Password"
         className="w-full px-4 py-3 bg-white/30 text-white placeholder-purple-100 border border-transparent rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-400 focus:bg-white/40 transition"
